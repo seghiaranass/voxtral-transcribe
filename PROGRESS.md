@@ -24,8 +24,15 @@ Session tracker. Updated after every phase so work is resumable. Plan file:
 - [x] **Phase 1 — Scaffold**: create-next-app, shadcn init + 14 components, Prisma schema (User +
       Transcription) + initial migration, `scripts/gen-keys.mjs`, `.env`/`.env.example`,
       `src/lib/db.ts`. `npm run build` clean. ✅
-- [ ] **Phase 2 — Auth**: Auth.js Credentials + bcrypt, /register (gated), /login, middleware route
-      protection, protected app shell + nav.
+- [x] **Phase 2 — Auth**: Auth.js v5 Credentials + bcrypt(12), JWT sessions. Files: `auth.config.ts`
+      (edge-safe, route protection in `authorized` cb), `auth.ts` (Node, Credentials+prisma+bcrypt),
+      `src/proxy.ts` (renamed from middleware — Next 16 convention), `/api/auth/[...nextauth]`,
+      `/api/register` (gated by `lib/registration.ts`), `/login` + `/register` pages + forms,
+      `app-nav.tsx` + `theme-toggle.tsx`, `(app)/layout.tsx` protected shell, `providers.tsx` (theme),
+      `next-auth.d.ts` (session.user.id). Smoke-tested via curl: register 201 / dup 409 / weak-pw 400 /
+      unauth `/`→307 `/login` / credential sign-in→302 + session cookie / authed `/`→200. ✅
+      NOTE: shadcn installed **Base UI** (`@base-ui/react`) not Radix → use `render={<X/>}` prop,
+      NOT `asChild`. Test user `test@example.com` exists in local dev DB (gitignored).
 - [ ] **Phase 3 — Settings / API key**: AES-256-GCM crypto, /api/key save+masked, /settings UI.
 - [ ] **Phase 4 — Upload + transcribe**: validation, voxtral client (EXACT §4 params), /api/transcribe,
       dashboard upload UI.
