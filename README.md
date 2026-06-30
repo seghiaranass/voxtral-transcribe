@@ -10,6 +10,31 @@ keep in a per-user history, and download as `.txt` or `.json`.
 
 ---
 
+## Screenshots
+
+**Dashboard** — drag-and-drop upload, language + diarization options, and recent transcriptions.
+
+![Dashboard](docs/screenshots/dashboard.png)
+
+**Result** — speaker-labelled, timestamped transcript with colour-coded speakers and `.txt` / `.json` downloads.
+
+![Transcription result](docs/screenshots/transcription.png)
+
+<details>
+<summary>More screenshots — History &amp; Settings</summary>
+
+**History** — every transcription, newest first, with status and duration.
+
+![History](docs/screenshots/history.png)
+
+**Settings** — the Mistral API key, encrypted at rest and shown only masked.
+
+![Settings](docs/screenshots/settings.png)
+
+</details>
+
+---
+
 ## Features
 
 - Email + password auth (bcrypt-hashed, persistent sessions, protected routes).
