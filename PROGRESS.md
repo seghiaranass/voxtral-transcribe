@@ -33,7 +33,11 @@ Session tracker. Updated after every phase so work is resumable. Plan file:
       unauth `/`→307 `/login` / credential sign-in→302 + session cookie / authed `/`→200. ✅
       NOTE: shadcn installed **Base UI** (`@base-ui/react`) not Radix → use `render={<X/>}` prop,
       NOT `asChild`. Test user `test@example.com` exists in local dev DB (gitignored).
-- [ ] **Phase 3 — Settings / API key**: AES-256-GCM crypto, /api/key save+masked, /settings UI.
+- [x] **Phase 3 — Settings / API key**: `lib/crypto.ts` (AES-256-GCM, format `iv:tag:ct` base64,
+      `maskSecret`→`••••••••last4`), `lib/api-key.ts` (save/clear/get/hasApiKey/getMaskedApiKey),
+      `lib/session.ts` (`currentUserId`), `/api/key` GET/POST/DELETE, `/settings` page +
+      `settings/api-key-form.tsx`. Verified: crypto round-trip ok (32-byte key), save→masked,
+      whitespace→400, no plaintext leak in GET, DELETE clears. ✅
 - [ ] **Phase 4 — Upload + transcribe**: validation, voxtral client (EXACT §4 params), /api/transcribe,
       dashboard upload UI.
 - [ ] **Phase 5 — Result + history + downloads**: transcript rendering, /transcription/[id], /history,
