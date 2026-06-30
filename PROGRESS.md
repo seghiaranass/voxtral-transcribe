@@ -38,8 +38,16 @@ Session tracker. Updated after every phase so work is resumable. Plan file:
       `lib/session.ts` (`currentUserId`), `/api/key` GET/POST/DELETE, `/settings` page +
       `settings/api-key-form.tsx`. Verified: crypto round-trip ok (32-byte key), save→masked,
       whitespace→400, no plaintext leak in GET, DELETE clears. ✅
-- [ ] **Phase 4 — Upload + transcribe**: validation, voxtral client (EXACT §4 params), /api/transcribe,
-      dashboard upload UI.
+- [x] **Phase 4 — Upload + transcribe**: `lib/transcript.ts` (types + `formatTranscript`/`formatTimestamp`/
+      `speakerLabel`/`speakerNumber`), `lib/voxtral.ts` (EXACT §4 params; diarize⇒`timestamp_granularities=segment`;
+      `VoxtralError` with key-free `userMessage`; 401/403/413/422/429/5xx mapping), `lib/storage.ts`
+      (saveUpload→UPLOAD_DIR, uuid filename), `/api/transcribe` (runtime=nodejs, maxDuration=600; creates
+      record `processing`→`done`/`error`), `components/upload/upload-form.tsx` (drag-drop, language Select,
+      diarization Switch default ON, loading), dashboard renders it with `hasApiKey` banner. Verified live:
+      no-key→400 NO_API_KEY, wrong-type→400 (server log), no-file→400, **real Mistral 401→mapped + stored
+      error** (params accepted). Success path needs user's real key. ✅
+      NOTE: returns HTTP 200 with `{id,status:"error",error}` when Mistral fails (so client routes to result
+      page); 4xx only for validation/no-key. Turbopack emits a harmless dynamic-path warning for storage.ts.
 - [ ] **Phase 5 — Result + history + downloads**: transcript rendering, /transcription/[id], /history,
       /api/transcriptions, .txt/.json download route.
 - [ ] **Phase 6 — Dockerize + docs**: Dockerfile (standalone), docker-compose (/data volume), README,

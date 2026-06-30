@@ -33,7 +33,9 @@ export const LANGUAGES = [
   { value: "ar", label: "Arabic" },
 ] as const;
 
-export const LANGUAGE_CODES = LANGUAGES.filter((l) => l.value !== "").map((l) => l.value);
+export const LANGUAGE_CODES: string[] = LANGUAGES.filter((l) => l.value !== "").map(
+  (l) => l.value,
+);
 
 // ----- Audio upload constraints (spec §3) -----
 export const MAX_FILE_BYTES = 100 * 1024 * 1024; // 100 MB
