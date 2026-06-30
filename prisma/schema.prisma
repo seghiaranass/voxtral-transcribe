@@ -1,0 +1,38 @@
+// Voxtral Transcription Web App — Prisma schema (spec §5)
+// SQLite for self-host simplicity; portable to Postgres by changing `provider`.
+
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "sqlite"
+}
+
+model User {
+  id             String          @id @default(cuid())
+  email          String          @unique
+  passwordHash   String
+  apiKeyEnc      String? // AES-256-GCM encrypted Mistral key (nullable until set)
+  createdAt      DateTime        @default(now())
+  transcriptions Transcription[]
+}
+
+model Transcription {
+  id            String   @id @default(cuid())
+  userId        String
+  user          User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  filename      String // original audio filename
+  audioPath     String // path under /data/uploads
+  language      String? // requested language or null=auto
+  diarized      Boolean  @default(true)
+  status        String   @default("processing") // processing | done | error
+  durationSec   Float? // from usage.prompt_audio_seconds
+  formattedText String? // rendered transcript for inline display + .txt
+  rawJson       String? // raw API response for .json download
+  errorMessage  String?
+  createdAt     DateTime @default(now())
+
+  @@index([userId, createdAt])
+}
