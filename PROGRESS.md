@@ -57,8 +57,19 @@ Session tracker. Updated after every phase so work is resumable. Plan file:
       Content-Disposition). Verified via seeded "done" record: result renders 2 speakers + ts 0:00/0:04,
       history lists it, .txt body formatted correctly (filename interview.txt), .json = raw response
       (filename interview.json). ✅
-- [ ] **Phase 6 — Dockerize + docs**: Dockerfile (standalone), docker-compose (/data volume), README,
-      backup note, final clean build.
+- [x] **Phase 6 — Dockerize + docs**: `next.config.ts` (serverExternalPackages for better-sqlite3/
+      prisma), multi-stage `Dockerfile` (node:24-bookworm-slim; builder compiles better-sqlite3 then
+      builds; runner copies node_modules+.next+prisma — NON-standalone so `prisma migrate deploy` works),
+      `docker-entrypoint.sh` (mkdir /data, migrate deploy, `next start`), `docker-compose.yml`
+      (port 3000, env_file .env, DATABASE_URL/UPLOAD_DIR→/data, AUTH_TRUST_HOST, named volume
+      voxtral-data), `.dockerignore`, full `README.md` (setup/secrets/first-user/docker/§4 params/
+      backups), `.gitattributes` *.sh eol=lf. **Verified live**: `docker compose build` ok, `up`→migrations
+      auto-applied + /login 200, in-container register/sign-in/key-encrypt/Mistral-401 all pass, **restart
+      → data persists** (volume). Final `npm run build` clean (13 routes). ✅
+
+## ✅ ALL PHASES COMPLETE — app builds, type-checks, and runs via `docker compose up`.
+Remaining for the user: supply a real Mistral API key in Settings and run a real audio file end-to-end
+(only the success path needs a valid key; 401/422/validation paths verified).
 
 ## How to resume
 1. `cd` into project, `npm install` (postinstall runs `prisma generate`).

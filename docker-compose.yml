@@ -1,0 +1,25 @@
+services:
+  app:
+    build: .
+    image: voxtral-webapp
+    container_name: voxtral
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    # Secrets (APP_ENCRYPTION_KEY, AUTH_SECRET, etc.) are read from your .env file.
+    # Copy .env.example to .env and fill it in first.
+    env_file:
+      - .env
+    environment:
+      # Override the local-dev paths so data lives on the persistent volume.
+      DATABASE_URL: "file:/data/app.db"
+      UPLOAD_DIR: "/data/uploads"
+      NODE_ENV: "production"
+      # Required by Auth.js when running behind a proxy / in a container.
+      AUTH_TRUST_HOST: "true"
+    volumes:
+      # Persists the SQLite DB (/data/app.db) and uploaded audio (/data/uploads).
+      - voxtral-data:/data
+
+volumes:
+  voxtral-data:

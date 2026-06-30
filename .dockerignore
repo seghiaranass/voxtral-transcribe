@@ -1,0 +1,14 @@
+node_modules
+.next
+.git
+data
+*.db
+.env
+.env.*
+!.env.example
+npm-debug.log*
+.DS_Store
+README.md
+PROGRESS.md
+voxtral-webapp-build-spec.md
+src/generated
