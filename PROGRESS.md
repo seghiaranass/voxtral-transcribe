@@ -67,6 +67,14 @@ Session tracker. Updated after every phase so work is resumable. Plan file:
       auto-applied + /login 200, in-container register/sign-in/key-encrypt/Mistral-401 all pass, **restart
       → data persists** (volume). Final `npm run build` clean (13 routes). ✅
 
+## Bugfix (post-launch)
+- **Account dropdown crashed the page** ("This page couldn't load") on click — root cause:
+  `DropdownMenuLabel` (Base UI `Menu.GroupLabel`) was used directly in `DropdownMenuContent` without a
+  surrounding `DropdownMenuGroup` → runtime `Base UI error #31: MenuGroupContext is missing`. Fixed in
+  `app-nav.tsx` by rendering the email as a plain `div` instead of the group-bound label. Verified with
+  headless Chrome (puppeteer) in BOTH dev and the rebuilt prod container: menu opens, no error.
+  **Lesson:** Base UI "group parts" (`*Label`) require a `*Group` parent — audited; no other misuse.
+
 ## ✅ ALL PHASES COMPLETE — app builds, type-checks, and runs via `docker compose up`.
 Remaining for the user: supply a real Mistral API key in Settings and run a real audio file end-to-end
 (only the success path needs a valid key; 401/422/validation paths verified).

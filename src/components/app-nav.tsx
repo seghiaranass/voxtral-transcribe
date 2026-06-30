@@ -15,7 +15,6 @@ import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
@@ -80,9 +79,9 @@ export function AppNav({ email }: { email: string }) {
               </Avatar>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end" className="w-56">
-              <DropdownMenuLabel className="truncate font-normal text-muted-foreground">
+              <div className="truncate px-2 py-1.5 text-sm font-normal text-muted-foreground">
                 {email}
-              </DropdownMenuLabel>
+              </div>
               <DropdownMenuSeparator />
               {links.map(({ href, label, icon: Icon }) => (
                 <DropdownMenuItem key={href} className="sm:hidden" render={<Link href={href} />}>
