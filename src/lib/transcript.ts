@@ -22,6 +22,16 @@ export interface VoxtralResponse {
   usage?: VoxtralUsage;
 }
 
+/** Safely parse a stored rawJson string back into a VoxtralResponse. */
+export function parseStoredJson(raw: string | null | undefined): VoxtralResponse | null {
+  if (!raw) return null;
+  try {
+    return JSON.parse(raw) as VoxtralResponse;
+  } catch {
+    return null;
+  }
+}
+
 /** Convert seconds (float) to "mm:ss" (or "h:mm:ss" past an hour). */
 export function formatTimestamp(seconds: number): string {
   const total = Math.max(0, Math.floor(seconds));

@@ -37,6 +37,12 @@ export const LANGUAGE_CODES: string[] = LANGUAGES.filter((l) => l.value !== "").
   (l) => l.value,
 );
 
+/** Human label for a stored language code (null/"" → "Auto-detect"). */
+export function languageLabel(code: string | null | undefined): string {
+  if (!code) return "Auto-detect";
+  return LANGUAGES.find((l) => l.value === code)?.label ?? code;
+}
+
 // ----- Audio upload constraints (spec §3) -----
 export const MAX_FILE_BYTES = 100 * 1024 * 1024; // 100 MB
 

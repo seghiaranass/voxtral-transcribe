@@ -48,8 +48,15 @@ Session tracker. Updated after every phase so work is resumable. Plan file:
       error** (params accepted). Success path needs user's real key. ✅
       NOTE: returns HTTP 200 with `{id,status:"error",error}` when Mistral fails (so client routes to result
       page); 4xx only for validation/no-key. Turbopack emits a harmless dynamic-path warning for storage.ts.
-- [ ] **Phase 5 — Result + history + downloads**: transcript rendering, /transcription/[id], /history,
-      /api/transcriptions, .txt/.json download route.
+- [x] **Phase 5 — Result + history + downloads**: `transcript.ts` (+`parseStoredJson`),
+      `components/transcript/transcript-view.tsx` (segment rows, speaker colour palette, muted ts),
+      `components/status-badge.tsx`, `components/history/history-list.tsx` (responsive table),
+      `/transcription/[id]` (inline view, processing/error/done states, download buttons),
+      `/history` (paginated, 20/pg), dashboard "Recent" (last 5), `/api/transcriptions` (GET list),
+      `/api/transcriptions/[id]/download?format=txt|json` (auth+ownership, filename = base+ext, RFC6266
+      Content-Disposition). Verified via seeded "done" record: result renders 2 speakers + ts 0:00/0:04,
+      history lists it, .txt body formatted correctly (filename interview.txt), .json = raw response
+      (filename interview.json). ✅
 - [ ] **Phase 6 — Dockerize + docs**: Dockerfile (standalone), docker-compose (/data volume), README,
       backup note, final clean build.
 
